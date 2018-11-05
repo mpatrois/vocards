@@ -1,0 +1,11 @@
+touch database/database.sqlite;
+echo "" > .env;
+echo "APP_ENV=local" >> .env;
+echo "APP_KEY=base64:JWNO1N7zdgLvDhLFOQsQsjrwJZEVn7trzLSPnASZf4s=" >> .env;
+echo "APP_DEBUG=true" >> .env;
+echo "APP_LOG_LEVEL=debug" >> .env;
+echo "DB_CONNECTION=sqlite" >> .env;
+echo "SESSION_DRIVER=database" >> .env;
+echo "FORCE_HTTPS=true" >> .env;
+php artisan migrate:refresh --seed;
+npm run build;
