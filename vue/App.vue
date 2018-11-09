@@ -35,7 +35,7 @@
        @drop="drop($event, list)"
        @dragover="allowDrop($event)"
     >
-      <h2>Glisser-déposer les sons ci-dessous pour les rassembler en groupe cohérents</h2>
+      <h2>Glisser-déposer les sons ci-dessous dans les colonnes pour les organiser en groupes cohérents</h2>
       <div class="song-container" v-for="(song, index) in list.songs"
         v-bind:key="index" draggable="true"
         @dragstart="drag($event, song, list)">
