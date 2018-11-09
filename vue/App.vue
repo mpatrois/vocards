@@ -6,12 +6,7 @@
         <button v-if="!closed" @click="newGroup()" class="circle">+</button>
         <button class="btn" @click="showAlertSave = true">Enregistrer</button>
         <button class="btn white-btn" @click="showAlertReset = true">Réinitialiser </button>
-        <router-link
-                    tag="button"
-                    class="btn white-btn"
-                    :to="{name: 'setup'}">
-                        Reconfigurer
-                    </router-link>
+        <button class="btn white-btn" @click="showAlertReconfig = true">Reconfigurer </button>
       </div>
     </header>
     <div class="list-sorter">
@@ -54,6 +49,9 @@
     <modal v-if="showAlertReset" @ok="initializeGroups()" @cancel="showAlertReset = false">
       <h3 slot="header">Voulez vous réinitialiser ces groupes ?</h3>
     </modal>
+    <modal v-if="showAlertReconfig" @ok="goBackToConfig()" @cancel="showAlertReconfig = false">
+      <h3 slot="header">Voulez vous revenir à la configuration d'un tri ?</h3>
+    </modal>
   </div>
 </template>
 
@@ -77,6 +75,7 @@ export default {
       songs: [],
       showAlertSave: false,
       showAlertReset: false,
+      showAlertReconfig: false,
     };
   },
   created() {
@@ -115,6 +114,10 @@ export default {
     },
     allowDrop(event) {
       event.preventDefault();
+    },
+    goBackToConfig() {
+      this.showAlertReconfig = false;
+      this.$router.push({ name: 'setup' });
     },
     initializeGroups() {
       this.showAlertReset = false;
