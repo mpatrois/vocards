@@ -1,9 +1,10 @@
 <template>
   <div id="main">
     <header class="header-page">
-      <h1>VOCARD</h1>
+      <h1>VOCARDS</h1>
       <div>
-        <button v-if="!closed" @click="newGroup()" class="circle">+</button>
+        <!-- <button v-if="!closed" @click="newGroup()" class="circle">+</button> -->
+        <img class="add-image" src="images/plus.svg" @click="newGroup()">
         <button class="btn" @click="showAlertSave = true">Enregistrer</button>
         <button class="btn white-btn" @click="showAlertReset = true">Réinitialiser </button>
         <button class="btn white-btn" @click="showAlertReconfig = true">Reconfigurer </button>
@@ -35,7 +36,8 @@
        @drop="drop($event, list)"
        @dragover="allowDrop($event)"
     >
-      <h2>Glisser-déposer les sons ci-dessous dans les colonnes pour les organiser en groupes cohérents</h2>
+      <h2>Glisser-déposer les sons ci-dessous dans les colonnes
+        pour les organiser en groupes cohérents</h2>
       <div class="song-container" v-for="(song, index) in list.songs"
         v-bind:key="index" draggable="true"
         @dragstart="drag($event, song, list)">
@@ -162,6 +164,11 @@ export default {
 #main{
    width: 100%;
   height: 100%;
+}
+
+.add-image{
+  width: 38px;
+  vertical-align: middle;
 }
 
 .header-page{
