@@ -1,6 +1,13 @@
 <template>
     <div id="background">
         <div id="setup">
+            <router-link
+                id="upload-files-link"
+                tag="button"
+                class="btn white-btn"
+                :to="{name: 'upload'}">
+                    Ajouter des fichiers audios
+                </router-link>
             <form>
                 <header>
                     <img class="post-it" src="images/post-it.svg">
@@ -77,6 +84,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+#upload-files-link{
+    position: absolute;
+    top: 0px;
+    right: 10px;
+}
 
 button{
     height: 40px;
