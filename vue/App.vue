@@ -4,8 +4,14 @@
       <h1>VOCARD</h1>
       <div>
         <button v-if="!closed" @click="newGroup()" class="circle">+</button>
-        <button @click="storeGroups()">Enregistrer la constitution des groupes </button>
-        <button @click="initializeGroups()" class="white-btn">Réinitialiser </button>
+        <button class="btn" @click="showAlertSave = true">Enregistrer</button>
+        <button class="btn white-btn" @click="showAlertReset = true">Réinitialiser </button>
+        <router-link
+                    tag="button"
+                    class="btn white-btn"
+                    :to="{name: 'setup'}">
+                        Reconfigurer
+                    </router-link>
       </div>
     </header>
     <div class="list-sorter">
@@ -42,9 +48,12 @@
         :song="song"/>
       </div>
     </div>
-    <div class="">
-
-    </div>
+    <modal v-if="showAlertSave" @ok="storeGroups()" @cancel="showAlertSave = false">
+      <h3 slot="header">Souhaitez vous enregistrer ces groupes ?</h3>
+    </modal>
+    <modal v-if="showAlertReset" @ok="initializeGroups()" @cancel="showAlertReset = false">
+      <h3 slot="header">Voulez vous réinitialiser ces groupes ?</h3>
+    </modal>
   </div>
 </template>
 
@@ -53,9 +62,10 @@ import SongService from './services/song.services';
 import SortService from './services/sort.services';
 import SongList from './SongList';
 import Song from './Song';
+import Modal from './Modal';
 
 export default {
-  components: { Song },
+  components: { Song, Modal },
   data() {
     return {
       groups: [],
@@ -65,6 +75,8 @@ export default {
       max: null,
       initialParams: {},
       songs: [],
+      showAlertSave: false,
+      showAlertReset: false,
     };
   },
   created() {
@@ -105,6 +117,7 @@ export default {
       event.preventDefault();
     },
     initializeGroups() {
+      this.showAlertReset = false;
       const {
         closed, groups, min, max,
       } = this.initialParams;
@@ -132,6 +145,9 @@ export default {
           name: group.name,
           songs: group.list.songs.map(song => song.id),
         })),
+      }).then(() => {
+        this.showAlertSave = false;
+        this.$router.push({ name: 'sorts' });
       });
     },
   },
@@ -149,20 +165,7 @@ export default {
   padding-top: 10px;
   padding-bottom: 10px;
   button{
-    height: 40px;
-    background: #6255AB;
-    outline: none;
-    border: none;
-    border-radius: 55px;
-    color: white;
-    font-size: 16px;
-    padding: 0px 40px;
-    margin-right: 20px;
-    &.white-btn{
-      background: white;
-      color: #6255AB;
-      border: 1px solid #6255AB;
-    }
+
     &.circle{
       width: auto;
       padding: 6px;
