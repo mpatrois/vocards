@@ -111,8 +111,10 @@ export default {
       list.songs.push(this.currentSongDragged);
     },
     deleteGroup(group) {
-      this.list.songs.push(...group.list.songs);
-      this.groups = this.groups.filter(g => g !== group);
+      if (this.groups.length > this.min) {
+        this.list.songs.push(...group.list.songs);
+        this.groups = this.groups.filter(g => g !== group);
+      }
     },
     allowDrop(event) {
       event.preventDefault();
@@ -138,6 +140,11 @@ export default {
       } else {
         this.min = min;
         this.max = max;
+        this.groups = [];
+        for (let i = 0; i < min; i += 1) {
+          // const element = array[i];
+          this.newGroup();
+        }
       }
       this.list.songs = this.songs;
     },
