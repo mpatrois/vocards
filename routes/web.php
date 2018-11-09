@@ -26,6 +26,7 @@ Route::prefix('api')->group(function () {
 });
 
 Route::get('/play/{url}', 'SongController@play');
+Route::get('/exportData', 'SongController@exportData');
 
 Route::get('{any}',  function () {
     return view('home');

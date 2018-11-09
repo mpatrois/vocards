@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\ReadMetaDataFile;
 
 use App\Song;
+use App\Sort;
 use App\Playlist;
 use App\Album;
 use Storage;
@@ -22,8 +23,6 @@ class SongController extends Controller
     public function play($id)
     {
         $song = Song::find($id);
-        // $song->nb_played = $song->nb_played + 1;
-        // $song->save();
         return Storage::disk('local')->download($song->url);
     }
 
@@ -42,19 +41,11 @@ class SongController extends Controller
             $song = new Song([
                 'title'          => $metaData->title,
                 'duration'       => $metaData->duration,
-                // 'genre'          => $metaData->genre,
-                // 'year'           => $metaData->year,
                 'url'            => $nameFile,
-                // 'artist_id'      => $metaData->artist_id,
-                // 'album_id'       => $metaData->album_id,
-                // 'user_id'        => Auth::user()->id
             ]);
             $song->save();
-            // Album::find($metaData->album_id)->songs()->save($song);
             Storage::disk('local')->put($nameFile, $binaryData);
             Storage::delete($tmpSongFilePath);
-            // $song->load('album');
-            // $song->load('artist');
             $songs[] = $song;
         }
         return $songs;
@@ -63,6 +54,9 @@ class SongController extends Controller
     public function update($id, Request $request){
         $song = Song::find($id);
         $song->fill($request->all());
+        if($song->description === null){
+            $song->description = 'pas de description';
+        }
         $song->valid = true;
         $song->save();
         return $song;
@@ -70,7 +64,6 @@ class SongController extends Controller
     
     public function destroy($id){
         $song = Song::find($id);
-        // $song->playlists()->detach();
         $song->delete();
     }
 
@@ -81,6 +74,58 @@ class SongController extends Controller
         $slug = str_slug($this->gen_uuid().date('now').$originalName);
         $finalName = $slug.'.'.$originalExt;
         return $finalName;
+    }
+
+    private function getSongGroupBySortId($song, $sortId){
+        foreach ($song->groups as $group) {
+            if($group->sort_id == $sortId){
+                return $group;
+            }
+        }
+        return null;
+    }
+
+    public function exportData(){
+        $sorts = Sort::with('groups')->get();
+        $songs = Song::with('groups')->get();
+        $finalData = [];
+        $finalData['header'] = [];
+        $finalData['header'][] = 'Label des groupes';
+        foreach ($sorts as $sort) {
+            $allGroupNames = $sort->groups->map(function($group){
+                return $group->name;
+            });
+            $finalData['header'][] = implode(' - ',$allGroupNames->toArray());
+        }
+        foreach ($songs as $song) {
+            $finalData[$song->id] = [];
+            $finalData[$song->id][] = $song->title;
+            foreach ($sorts as $sort) {
+                $labelInSort = '';
+                $groupOfSort = $this->getSongGroupBySortId($song, $sort->id);
+                if($groupOfSort !== null){
+                    $labelInSort = $groupOfSort->name;
+                }
+                $finalData[$song->id][] = $labelInSort;
+            }
+        }
+
+        $callback = function() use ($finalData) 
+        {
+            $FH = fopen('php://output', 'w');
+            foreach ($finalData as $row) { 
+                fputcsv($FH, $row);
+            }
+            fclose($FH);
+        };
+
+        return response()->stream($callback, 200, [
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0'
+        ,   'Content-type'        => 'text/csv'
+        ,   'Content-Disposition' => 'attachment; filename=data.csv'
+        ,   'Expires'             => '0'
+        ,   'Pragma'              => 'public'
+        ]);
     }
 
     private function gen_uuid() {

@@ -5,6 +5,10 @@
                 <label>Titre</label>
                 <input v-model="songToModify.title">
             </div>
+            <div>
+                <label>Description</label>
+                <input v-model="songToModify.description">
+            </div>
             <div class="text-left">
                 <button class="preview" v-if="!preview" @click="preview=true">Aperçu</button>
                 <audio v-if="preview" controls>
