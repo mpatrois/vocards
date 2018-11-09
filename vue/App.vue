@@ -18,7 +18,7 @@
           @dragover="allowDrop($event)"
           >
           <header>
-            <textarea v-model="group.name"></textarea>
+            <textarea :disabled="closed" v-model="group.name"></textarea>
             <button v-if="!closed" class="delete-group" @click="deleteGroup(group)">x</button>
           </header>
           <div
