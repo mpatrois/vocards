@@ -19,7 +19,9 @@
                 </p>
                 <input type="checkbox" id="id-name--1" v-model="closed" class="switch-input">
                 <label for="id-name--1" class="switch-label">
-                    Tri de carte fermé
+                    Tri de carte
+                    <span class="toggle--on">fermé</span>
+                    <span class="toggle--off">ouvert</span>
                 </label>
                 <div v-if="closed">
                     <div v-for="(group,index) in groups" v-bind:key="index">

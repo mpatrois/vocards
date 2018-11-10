@@ -55,7 +55,7 @@ class SongController extends Controller
         $song = Song::find($id);
         $song->fill($request->all());
         if($song->description === null){
-            $song->description = 'pas de description';
+            $song->description = '';
         }
         $song->valid = true;
         $song->save();
