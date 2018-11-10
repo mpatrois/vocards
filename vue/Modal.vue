@@ -64,6 +64,7 @@
 .modal-header h3 {
   margin-top: 0;
   color: #6255AB;
+  text-align: center;
 }
 
 .modal-body {

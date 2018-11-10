@@ -13,7 +13,7 @@ const store = new Vuex.Store({
 
 const router = new VueRouter({ routes, mode: 'history' });
 
-Vue.prototype.$bus = new Vue({});
+Vue.prototype.$eventHub = new Vue({});
 
 const vueApp = new Vue({
   el: '#app',

@@ -4,10 +4,10 @@
    }">
        <template class="icon-play">
             <i class="material-icons" v-if="!playing" @click="play()">
-                play_circle_outline
+                play_arrow
             </i>
             <i class="material-icons" v-else @click="pause()">
-                pause_circle_outline
+                stop
             </i>
        </template>
         <span>
@@ -27,13 +27,23 @@ export default {
       playing: false,
     };
   },
+  created() {
+    console.log(this.$eventHub);
+    this.$eventHub.$on('song_playing', (id) => {
+      if (this.song.id !== id) {
+        this.pause();
+      }
+    });
+  },
   methods: {
     pause() {
       this.$refs.audio.pause();
+      this.$refs.audio.currentTime = 0;
       this.playing = false;
     },
     play() {
       this.$refs.audio.play();
+      this.$eventHub.$emit('song_playing', this.song.id);
       this.playing = true;
       this.$refs.audio.onended = () => {
         this.playing = false;

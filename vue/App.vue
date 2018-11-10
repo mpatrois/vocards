@@ -52,7 +52,7 @@
       <h3 slot="header">Voulez vous réinitialiser ces groupes ?</h3>
     </modal>
     <modal v-if="showAlertReconfig" @ok="goBackToConfig()" @cancel="showAlertReconfig = false">
-      <h3 slot="header">Voulez vous revenir à la configuration d'un tri ?</h3>
+      <h3 slot="header">Voulez vous revenir à l'écran de configuration ?</h3>
     </modal>
   </div>
 </template>
