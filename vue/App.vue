@@ -316,6 +316,9 @@ textarea {
     margin-left: 0px;
     margin-top: 0px;
     padding-left: 12px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 17px;
   &:focus {
     background: #fff;
     border: 1px solid #5ba4cf;
@@ -341,6 +344,7 @@ header{
     background: none;
     border:none;
     outline: none;
+    margin-right: 7px;
     img{
       width: 15px;
       padding: 2px;
