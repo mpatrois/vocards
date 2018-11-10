@@ -28,7 +28,6 @@ export default {
     };
   },
   created() {
-    console.log(this.$eventHub);
     this.$eventHub.$on('song_playing', (id) => {
       if (this.song.id !== id) {
         this.pause();

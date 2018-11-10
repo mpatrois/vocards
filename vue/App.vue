@@ -142,7 +142,6 @@ export default {
         this.max = max;
         this.groups = [];
         for (let i = 0; i < min; i += 1) {
-          // const element = array[i];
           this.newGroup();
         }
       }
@@ -215,7 +214,7 @@ export default {
     width: calc( 100% - 40px);
     overflow-x: auto;
     padding: 20px;
-    padding-top: 0px;
+    padding-top: 20px;
     align-items: flex-start;
     .group{
       background-color: white;

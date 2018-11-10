@@ -1,13 +1,13 @@
 <template>
     <div id="background">
-        <div id="setup">
-            <router-link
+        <router-link
                 id="upload-files-link"
                 tag="button"
                 class="btn white-btn"
                 :to="{name: 'upload'}">
                     Ajouter des fichiers audios
                 </router-link>
+        <div id="setup">
             <form>
                 <header>
                     <img class="post-it" src="images/post-it.svg">
@@ -23,25 +23,29 @@
                     <span class="toggle--on">fermé</span>
                     <span class="toggle--off">ouvert</span>
                 </label>
-                <div v-if="closed">
-                    <div v-for="(group,index) in groups" v-bind:key="index">
-                        <input type="text" v-model="group.name">
-                        <img @click="deleteGroup(group)" class="delete-img" src="images/cross.svg">
+                <div class="settings">
+                    <div v-if="closed">
+                        <div v-for="(group,index) in groups" v-bind:key="index">
+                            <input type="text" v-model="group.name">
+                            <img @click="deleteGroup(group)" class="delete-img"
+                                src="images/cross.svg">
+                        </div>
+                        <img class="add-image" src="images/plus.svg" @click="addGroup()">
                     </div>
-                    <img class="add-image" src="images/plus.svg" @click="addGroup()">
-                </div>
-                <div v-else>
-                    <div>
-                        <label>Nombre de groupe minimum</label>
-                        <input type="number" v-model="min" min="1" :max="max" placeholder="min">
-                    </div>
-                    <div>
-                        <label>Nombre de groupe maximum</label>
-                        <input type="number" v-model="max" :min="min" placeholder="max">
+                    <div v-else>
+                        <div class="input-range">
+                            <label>Nombre de groupe minimum</label>
+                            <input type="number" v-model="min" min="1" :max="max" placeholder="min">
+                        </div>
+                        <div class="input-range">
+                            <label>Nombre de groupe maximum</label>
+                            <input type="number" v-model="max" :min="min" placeholder="max">
+                        </div>
                     </div>
                 </div>
                 <div>
                     <router-link
+                    id="valid"
                     tag="button"
                     class="btn"
                     :to="{
@@ -105,6 +109,10 @@ button{
     margin-top: 30px;
 }
 
+.settings{
+    min-height: 195px;
+}
+
 #background {
   width: 100%;
   height: 100%;
@@ -131,9 +139,11 @@ img{
     margin:0 auto;
     background: #F4F6FE;
     height: auto;
+    position: relative;
     text-align: center;
     box-shadow: 10px, 10p rgba(0, 0, 0, 0.5);
     padding: 40px;
+    min-height: 500px;
     .post-it{
         width: 40px;
         margin-top: 20px;
@@ -159,6 +169,19 @@ img{
     }
     .add-image{
         margin-top: 40px;
+        width: 30px;
+    }
+}
+
+.input-range{
+    text-align: center;
+    label{
+        font-weight: 400;
+        width: 230px;
+        display: inline-block;
+        margin-top: 30px;
+    }
+    input{
         width: 30px;
     }
 }
