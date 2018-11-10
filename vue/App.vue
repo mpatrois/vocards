@@ -25,8 +25,8 @@
           </header>
           <hr>
           <div
-            v-for="(song, index) in group.list.songs"
-            v-bind:key="index"
+            v-for="song in group.list.songs"
+            v-bind:key="song.id"
             draggable="true" @dragstart="drag($event, song, group.list)"
             class="song-container">
               <Song
@@ -47,8 +47,8 @@
         <img v-else src="images/list-mode_On.svg">
       </div>
       <div class="songs" :class="{'list-mode':displayList}">
-        <div class="song-container" v-for="(song, index) in list.songs"
-          v-bind:key="index" draggable="true"
+        <div class="song-container" v-for="song in list.songs"
+          v-bind:key="song.id" draggable="true"
           @dragstart="drag($event, song, list)">
           <Song
             :displayDescription="displayList"

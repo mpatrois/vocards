@@ -31,11 +31,10 @@ export default {
     };
   },
   created() {
-    this.$eventHub.$on('song_playing', (id) => {
-      if (this.song.id !== id) {
-        this.pause();
-      }
-    });
+    this.$eventHub.$on('song_playing', this.listenForOtherPlay);
+  },
+  beforeDestroy() {
+    this.$eventHub.$off('song_playing', this.listenForOtherPlay);
   },
   methods: {
     pause() {
@@ -50,6 +49,13 @@ export default {
       this.$refs.audio.onended = () => {
         this.playing = false;
       };
+    },
+    listenForOtherPlay(id) {
+      if (this.song.id !== id) {
+        if (this.playing) {
+          this.pause();
+        }
+      }
     },
   },
 };
