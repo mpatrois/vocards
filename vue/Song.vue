@@ -11,7 +11,10 @@
             </i>
        </template>
         <span>
-            Track {{song.title}}
+            {{song.title}}
+        </span>
+        <span class="description" v-if="displayDescription">
+           : "{{song.description}}"
         </span>
         <i class="material-icons drag_indicator">
             drag_indicator
@@ -21,7 +24,7 @@
 </template>
 <script>
 export default {
-  props: ['song'],
+  props: ['song', 'displayDescription'],
   data() {
     return {
       playing: false,
@@ -66,6 +69,13 @@ export default {
     .drag_indicator{
         position: absolute;
         right: 2px;
+    }
+    .description{
+        width: 75%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-align: left;
+        text-overflow: ellipsis;
     }
 }
 

@@ -38,11 +38,20 @@
     >
       <h2>Glisser-déposer les sons ci-dessous dans les colonnes
         pour les organiser en groupes cohérents</h2>
-      <div class="song-container" v-for="(song, index) in list.songs"
-        v-bind:key="index" draggable="true"
-        @dragstart="drag($event, song, list)">
-       <Song
-        :song="song"/>
+      <div @click="displayList=!displayList" class="select_display-mode">
+        <img v-if="!displayList" src="images/card-mode_On.svg">
+        <img v-else src="images/card-mode_Off.svg">
+        <img v-if="!displayList" src="images/list-mode_Off.svg">
+        <img v-else src="images/list-mode_On.svg">
+      </div>
+      <div class="songs" :class="{'list-mode':displayList}">
+        <div class="song-container" v-for="(song, index) in list.songs"
+          v-bind:key="index" draggable="true"
+          @dragstart="drag($event, song, list)">
+          <Song
+            :displayDescription="displayList"
+            :song="song"/>
+        </div>
       </div>
     </div>
     <modal v-if="showAlertSave" @ok="storeGroups()" @cancel="showAlertSave = false">
@@ -78,6 +87,7 @@ export default {
       showAlertSave: false,
       showAlertReset: false,
       showAlertReconfig: false,
+      displayList: false,
     };
   },
   created() {
@@ -177,6 +187,16 @@ export default {
   vertical-align: middle;
 }
 
+.select_display-mode{
+  position: absolute;
+  cursor: pointer;
+  right: 10px;
+  top: 10px;
+  img{
+    width: 20px;
+  }
+}
+
 .header-page{
   padding-top: 10px;
   padding-bottom: 10px;
@@ -240,14 +260,29 @@ export default {
     border-top: 10px solid #6255AB;
     height: 35%;
     padding: 0px 20px;
+    position: relative;
     h2{
       color: #6255AB;
       font-size: 15px;
       font-weight: 300;
       margin-left: 10px;
     }
+
+    .song-container{
+      min-width: 200px;
+    }
+
     .song{
       background: #515151;
+    }
+
+    .list-mode{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      .song-container{
+        width: 32%;
+      }
     }
   }
   .song-container{
