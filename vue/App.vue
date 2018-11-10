@@ -3,8 +3,7 @@
     <header class="header-page">
       <h1>VOCARDS</h1>
       <div>
-        <!-- <button v-if="!closed" @click="newGroup()" class="circle">+</button> -->
-        <img class="add-image" src="images/plus.svg" @click="newGroup()">
+        <img v-if="!closed" class="add-image" src="images/plus.svg" @click="newGroup()">
         <button class="btn" @click="showAlertSave = true">Enregistrer</button>
         <button class="btn white-btn" @click="showAlertReset = true">Réinitialiser </button>
         <button class="btn white-btn" @click="showAlertReconfig = true">Reconfigurer </button>
@@ -20,8 +19,11 @@
           >
           <header>
             <textarea :disabled="closed" v-model="group.name"></textarea>
-            <button v-if="!closed" class="delete-group" @click="deleteGroup(group)">x</button>
+            <button v-if="!closed" class="delete-group" @click="deleteGroup(group)">
+              <img src="images/cross.svg">
+            </button>
           </header>
+          <hr>
           <div
             v-for="(song, index) in group.list.songs"
             v-bind:key="index"
@@ -200,6 +202,7 @@ export default {
 .header-page{
   padding-top: 10px;
   padding-bottom: 10px;
+  padding-right: 10px;
   button{
 
     &.circle{
@@ -293,7 +296,7 @@ export default {
 }
 textarea {
     background: transparent;
-    border-radius: 3px;
+    border-radius: 0px;
     box-shadow: none;
     font-weight: 700;
     height: 20px;
@@ -312,6 +315,7 @@ textarea {
     padding-left: 6px;
     margin-left: 0px;
     margin-top: 0px;
+    padding-left: 12px;
   &:focus {
     background: #fff;
     border: 1px solid #5ba4cf;
@@ -319,6 +323,12 @@ textarea {
   }
 }
 
+hr{
+  background: #E5E5E5;
+  width: 50%;
+  height: 1px;
+  border: 0px;
+}
 
 header{
   display: flex;
@@ -331,6 +341,10 @@ header{
     background: none;
     border:none;
     outline: none;
+    img{
+      width: 15px;
+      padding: 2px;
+    }
   }
 }
 </style>
