@@ -93,7 +93,7 @@ export default {
     };
   },
   created() {
-    this.initialParams = this.$route.params;
+    this.initialParams = this.$route.query;
     if (this.initialParams.closed === undefined) {
       this.$router.push({ name: 'setup' });
     } else {
@@ -145,7 +145,7 @@ export default {
         this.groups = [];
         groups.forEach((group) => {
           this.groups.push({
-            name: group.name,
+            name: group,
             list: new SongList(),
           });
         });

@@ -50,9 +50,9 @@
                     class="btn"
                     :to="{
                         name: 'sort',
-                        params: {
+                        query: {
                             closed: closed,
-                            groups:groups,
+                            groups:groups.map((group)=>group.name),
                             min:min,
                             max:max
                         }
